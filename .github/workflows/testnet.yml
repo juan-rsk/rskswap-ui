@@ -1,11 +1,11 @@
-name: "RSKswap UI deploy QA"
+name: "RSKswap UI deploy TestNet"
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
+
 jobs:
-  deploy-qa:
-    name: Deploy to QA site
+  deploy:
+    name: Deploy to TestNet site
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -19,10 +19,9 @@ jobs:
     - name: Build site
       run: |
         VUE_APP_CHAIN_ID=31 \
-        VUE_APP_NETWORK_NAME="RSK QA" \
-        VUE_APP_LOCALSTORAGE_NAME=rsk-qa \
+        VUE_APP_NETWORK_NAME="RSK TESTNET" \
+        VUE_APP_LOCALSTORAGE_NAME=rsk-testnet \
         VUE_APP_RELAYER_ADDRESS=0x722D892e6dDaa0EFDe08aC23FF25571D86FBacD4 \
-
         VUE_APP_SWAP_ADDRESS=0x48288D0e3079A03f6EC1846554CFc58C2696Aaee \
         VUE_APP_EXPLORER_ADDRESS="https://explorer.testnet.rsk.co" \
         VUE_APP_EXPLORER_TOKEN_TAB="?__tab=tokens%20transfers" \
@@ -34,12 +33,12 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
-        aws-access-key-id: ${{ secrets.QA_AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.QA_AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.QA_AWS_REGION }}
+        aws-access-key-id: ${{ secrets.TESTNET_AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.TESTNET_AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.TESTNET_AWS_REGION }}
     - name: Deploy site to S3
       run: |
-        aws s3 sync --delete --only-show-errors dist/ ${{ secrets.QA_S3_BUCKET }}
+        aws s3 sync --delete --only-show-errors dist/ ${{ secrets.TESTNET_S3_BUCKET }}
     - name: Invalidate CloudFront cache
       run: |
-        aws cloudfront create-invalidation --distribution-id ${{ secrets.QA_CLOUDFRONT_DISTRIBUTION }} --paths "/*"
+        aws cloudfront create-invalidation --distribution-id ${{ secrets.TESTNET_CLOUDFRONT_DISTRIBUTION }} --paths "/*"
