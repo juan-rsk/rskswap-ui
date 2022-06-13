@@ -22,6 +22,7 @@ jobs:
         VUE_APP_NETWORK_NAME="RSK QA" \
         VUE_APP_LOCALSTORAGE_NAME=rsk-qa \
         VUE_APP_RELAYER_ADDRESS=0x722D892e6dDaa0EFDe08aC23FF25571D86FBacD4 \
+
         VUE_APP_SWAP_ADDRESS=0x48288D0e3079A03f6EC1846554CFc58C2696Aaee \
         VUE_APP_EXPLORER_ADDRESS="https://explorer.testnet.rsk.co" \
         VUE_APP_EXPLORER_TOKEN_TAB="?__tab=tokens%20transfers" \
